@@ -1,5 +1,6 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 interface PremiumButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement | HTMLAnchorElement> {
   variant?: "primary" | "secondary";
@@ -15,51 +16,49 @@ export const PremiumButton = React.forwardRef<HTMLButtonElement & HTMLAnchorElem
     const [ripples, setRipples] = React.useState<Array<{ x: number; y: number; id: number }>>([]);
     const [particles, setParticles] = React.useState<Array<{ x: number; y: number; id: number; delay: number }>>([]);
     const [isHovered, setIsHovered] = React.useState(false);
-    const buttonRef = React.useRef<HTMLButtonElement & HTMLAnchorElement>(null);
+    const prefersReducedMotion = usePrefersReducedMotion();
 
     // Ripple effect on click
     const handleClick = (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
-      const rect = buttonRef.current?.getBoundingClientRect();
-      if (rect) {
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const id = Date.now();
-        setRipples((prev) => [...prev, { x, y, id }]);
-        
-        // Remove ripple after animation
-        setTimeout(() => {
-          setRipples((prev) => prev.filter((r) => r.id !== id));
-        }, 600);
-      }
-      
+      const rect = e.currentTarget.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const id = Date.now();
+      setRipples((prev) => [...prev, { x, y, id }]);
+
+      // Remove ripple after animation
+      window.setTimeout(() => {
+        setRipples((prev) => prev.filter((r) => r.id !== id));
+      }, 600);
+
       onClick?.(e);
     };
 
     // Generate particles on hover
     React.useEffect(() => {
-      if (isHovered) {
-        const interval = setInterval(() => {
-          const id = Date.now();
-          const x = Math.random() * 100;
-          const y = Math.random() * 100;
-          const delay = Math.random() * 0.5;
-          
-          setParticles((prev) => {
-            const newParticles = [...prev, { x, y, id, delay }];
-            return newParticles.slice(-8); // Keep max 8 particles
-          });
-          
-          // Remove particle after animation
-          setTimeout(() => {
-            setParticles((prev) => prev.filter((p) => p.id !== id));
-          }, 2000);
-        }, 200);
-        
-        return () => clearInterval(interval);
-      } else {
+      if (prefersReducedMotion || !isHovered) {
         setParticles([]);
+        return;
       }
-    }, [isHovered]);
+
+      const interval = window.setInterval(() => {
+        const id = Date.now();
+        const x = Math.random() * 100;
+        const y = Math.random() * 100;
+        const delay = Math.random() * 0.5;
+
+        setParticles((prev) => {
+          const newParticles = [...prev, { x, y, id, delay }];
+          return newParticles.slice(-8);
+        });
+
+        window.setTimeout(() => {
+          setParticles((prev) => prev.filter((p) => p.id !== id));
+        }, 2000);
+      }, 200);
+
+      return () => window.clearInterval(interval);
+    }, [isHovered, prefersReducedMotion]);
 
     const baseClasses = cn(
       "relative inline-flex items-center justify-center gap-3 font-bold rounded-xl overflow-hidden",
@@ -76,17 +75,18 @@ export const PremiumButton = React.forwardRef<HTMLButtonElement & HTMLAnchorElem
     const content = (
       <>
         {/* Particle effects */}
-        {particles.map((particle) => (
-          <div
-            key={particle.id}
-            className="absolute w-1 h-1 bg-primary-foreground rounded-full pointer-events-none animate-particle"
-            style={{
-              left: `${particle.x}%`,
-              top: `${particle.y}%`,
-              animationDelay: `${particle.delay}s`,
-            }}
-          />
-        ))}
+        {!prefersReducedMotion &&
+          particles.map((particle) => (
+            <div
+              key={particle.id}
+              className="absolute w-1 h-1 bg-primary-foreground rounded-full pointer-events-none animate-particle"
+              style={{
+                left: `${particle.x}%`,
+                top: `${particle.y}%`,
+                animationDelay: `${particle.delay}s`,
+              }}
+            />
+          ))}
 
         {/* Ripple effects */}
         {ripples.map((ripple) => (
@@ -131,17 +131,17 @@ export const PremiumButton = React.forwardRef<HTMLButtonElement & HTMLAnchorElem
       </>
     );
 
-    const Component = href ? "a" : "button";
+    const Component = (href ? "a" : "button") as const;
+    const sharedProps = props as React.ComponentPropsWithoutRef<typeof Component>;
 
     return (
       <Component
-        ref={buttonRef as any}
         href={href}
         className={cn(baseClasses, "group")}
         onClick={handleClick}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        {...(props as any)}
+        {...sharedProps}
       >
         {content}
       </Component>
