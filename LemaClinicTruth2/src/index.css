@@ -8,45 +8,64 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Dark investigative theme */
-    --background: 0 0% 4%;
-    --foreground: 0 0% 98%;
+    /* Dark investigative theme with premium copper & midnight accents */
+    --background: 220 35% 6%;
+    --foreground: 210 30% 96%;
 
-    --card: 0 0% 7%;
-    --card-foreground: 0 0% 98%;
+    --card: 220 28% 10%;
+    --card-foreground: 210 30% 94%;
 
-    --popover: 0 0% 7%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 220 28% 8%;
+    --popover-foreground: 210 30% 94%;
 
-    /* Alert red as primary - urgent/danger theme */
-    --primary: 0 72% 51%;
+    /* Signature crimsons */
+    --primary: 355 86% 54%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 11%;
-    --secondary-foreground: 0 0% 98%;
+    /* Copper champagne secondary */
+    --secondary: 32 58% 62%;
+    --secondary-foreground: 24 32% 16%;
 
-    --muted: 0 0% 11%;
-    --muted-foreground: 0 0% 65%;
+    /* Midnight blue tertiary */
+    --tertiary: 215 70% 22%;
+    --tertiary-foreground: 210 40% 92%;
 
-    --accent: 0 72% 51%;
-    --accent-foreground: 0 0% 100%;
+    --muted: 220 24% 18%;
+    --muted-foreground: 215 14% 72%;
 
-    --destructive: 0 84% 60%;
+    --accent: 203 79% 48%;
+    --accent-foreground: 200 30% 94%;
+
+    --destructive: 0 80% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 15%;
-    --input: 0 0% 15%;
-    --ring: 0 72% 51%;
+    --border: 220 26% 20%;
+    --input: 220 26% 22%;
+    --ring: 355 86% 54%;
 
-    --radius: 0.75rem;
+    --cta-primary: 355 86% 54%;
+    --cta-primary-foreground: 0 0% 100%;
+    --cta-secondary: 32 58% 62%;
+    --cta-secondary-foreground: 24 32% 16%;
+    --cta-tertiary: 215 70% 22%;
+    --cta-tertiary-foreground: 210 40% 92%;
 
-    /* Glass morphism */
-    --glass-bg: 0 0% 100% / 0.03;
+    --badge-surface: 220 22% 14%;
+    --badge-border: 210 15% 28%;
+
+    --radius: 0.85rem;
+
+    --glass-bg: 0 0% 100% / 0.035;
     --glass-border: 0 0% 100% / 0.08;
-    
-    /* Shadows */
-    --shadow-glow: 0 0 40px hsl(0 72% 51% / 0.3);
-    --shadow-intense: 0 0 80px hsl(0 72% 51% / 0.5);
+
+    --shadow-glow: 0 0 40px hsl(var(--primary) / 0.32);
+    --shadow-intense: 0 0 80px hsl(var(--primary) / 0.45);
+
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-heading: 'Playfair Display', 'Georgia', serif;
+    --font-geo: 'Space Grotesk', 'Inter', sans-serif;
+
+    --grain-opacity: 0.18;
   }
 }
 
@@ -57,30 +76,65 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: var(--font-body);
+    font-feature-settings: "liga" 1, "kern" 1;
+    letter-spacing: 0.01em;
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Playfair Display', Georgia, serif;
+  h1 {
+    font-family: var(--font-heading);
+  }
+
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-geo);
+    letter-spacing: 0.02em;
+  }
+
+  .font-geo {
+    font-family: var(--font-geo);
   }
 
   /* Glass morphism utility - Premium */
   .glass {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(15, 18, 24, 0.55);
+    backdrop-filter: blur(14px) saturate(140%);
+    border: 1px solid hsla(var(--foreground) / 0.08);
   }
 
   .glass-strong {
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(19, 24, 32, 0.7);
+    backdrop-filter: blur(22px) saturate(160%);
+    border: 1px solid hsla(var(--foreground) / 0.12);
   }
 
   .glass-premium {
-    background: rgba(255, 255, 255, 0.02);
-    backdrop-filter: blur(24px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(18, 20, 28, 0.6);
+    backdrop-filter: blur(30px) saturate(200%);
+    border: 1px solid hsla(var(--foreground) / 0.1);
+  }
+
+  .grain-overlay::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+    opacity: var(--grain-opacity);
+    mix-blend-mode: screen;
+  }
+
+  .mesh-panel {
+    position: relative;
+    background-image:
+      radial-gradient(circle at 10% 20%, hsla(var(--primary) / 0.55), transparent 55%),
+      radial-gradient(circle at 80% 10%, hsla(var(--accent) / 0.3), transparent 50%),
+      radial-gradient(circle at 15% 85%, hsla(var(--secondary) / 0.45), transparent 60%),
+      radial-gradient(circle at 90% 80%, hsla(var(--tertiary) / 0.6), transparent 65%);
+    background-color: hsl(var(--background));
   }
 
   /* Smooth scrolling */
@@ -98,12 +152,12 @@ All colors MUST be HSL.
   }
 
   ::-webkit-scrollbar-thumb {
-    background: hsl(var(--primary) / 0.5);
+    background: hsl(var(--tertiary) / 0.5);
     border-radius: 5px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: hsl(var(--primary));
+    background: hsl(var(--tertiary));
   }
 
   /* Premium Button Animations */
@@ -182,6 +236,17 @@ All colors MUST be HSL.
 
   .animate-shimmer {
     animation: shimmer 1.5s infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }
 
