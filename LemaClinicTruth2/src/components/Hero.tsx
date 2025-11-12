@@ -1,27 +1,21 @@
 import { Shield, Heart } from "lucide-react";
 import { PremiumButton } from "@/components/ui/premium-button";
-import { useState, useEffect } from "react";
+import { useScrollPosition } from "@/hooks/useScrollPosition";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 export const Hero = () => {
-  const [scrollY, setScrollY] = useState(0);
+  const scrollY = useScrollPosition();
+  const prefersReducedMotion = usePrefersReducedMotion();
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Calcul des offsets parallaxe
-  const titleParallaxY = scrollY * 0.3;
-  const titleScale = Math.max(1 - scrollY * 0.0003, 0.85);
-  const titleOpacity = Math.max(1 - scrollY * 0.002, 0);
+  const titleParallaxY = prefersReducedMotion ? 0 : scrollY * 0.3;
+  const titleScale = prefersReducedMotion ? 1 : Math.max(1 - scrollY * 0.0003, 0.85);
+  const titleOpacity = prefersReducedMotion ? 1 : Math.max(1 - scrollY * 0.002, 0);
+  const getAosProps = (animation: string, delay?: number) =>
+    prefersReducedMotion ? {} : { "data-aos": animation, ...(delay ? { "data-aos-delay": delay } : {}) };
 
   return (
     <section
-      id="accueil"
+      id="hero"
       className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-card relative overflow-hidden pt-20"
     >
       {/* Animated background effect */}
@@ -32,7 +26,7 @@ export const Hero = () => {
 
       <div className="container mx-auto px-6 text-center relative z-10">
         {/* Breaking News Banner */}
-        <div className="glass-strong rounded-xl p-3 mb-8 mt-4 max-w-4xl mx-auto" data-aos="fade-down">
+        <div className="glass-strong rounded-xl p-3 mb-8 mt-4 max-w-4xl mx-auto" {...getAosProps("fade-down")}>
           <div className="flex items-center justify-center space-x-3 flex-wrap">
             <span className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-bold font-mono uppercase tracking-wider">
               ALERTE
@@ -44,7 +38,7 @@ export const Hero = () => {
         </div>
 
         {/* Alert Icon */}
-        <div className="flex justify-center mb-12" data-aos="zoom-in" data-aos-delay="300">
+        <div className="flex justify-center mb-12" {...getAosProps("zoom-in", 300)}>
           <div className="relative">
             <div className="absolute inset-0 rounded-full bg-primary/20 animate-ping"></div>
             <div className="p-8 bg-gradient-to-br from-primary via-primary to-primary/80 rounded-full relative z-10 glass-strong">
@@ -56,10 +50,9 @@ export const Hero = () => {
         </div>
 
         {/* Main Title */}
-        <h1 
-          className="text-6xl lg:text-7xl xl:text-8xl font-black mb-8 leading-none relative" 
-          data-aos="fade-up" 
-          data-aos-delay="600"
+        <h1
+          className="text-6xl lg:text-7xl xl:text-8xl font-black mb-8 leading-none relative"
+          {...getAosProps("fade-up", 600)}
           style={{
             transform: `translateY(${titleParallaxY}px) scale(${titleScale})`,
             opacity: titleOpacity,
@@ -85,10 +78,9 @@ export const Hero = () => {
         </h1>
 
         {/* Slogan */}
-        <p 
-          className="text-2xl lg:text-3xl xl:text-4xl mb-12 font-light text-primary font-playfair" 
-          data-aos="fade-up" 
-          data-aos-delay="900"
+        <p
+          className="text-2xl lg:text-3xl xl:text-4xl mb-12 font-light text-primary font-playfair"
+          {...getAosProps("fade-up", 900)}
           style={{
             transform: `translateY(${titleParallaxY * 0.5}px)`,
             opacity: titleOpacity,
@@ -99,7 +91,7 @@ export const Hero = () => {
         </p>
 
         {/* Mission Statement */}
-        <div className="max-w-6xl mx-auto mb-16" data-aos="fade-up" data-aos-delay="1200">
+        <div className="max-w-6xl mx-auto mb-16" {...getAosProps("fade-up", 1200)}>
           <div className="glass-strong rounded-2xl p-8 lg:p-12 hover:scale-105 transition-transform duration-500">
             <p className="text-xl lg:text-2xl xl:text-3xl font-bold leading-relaxed text-foreground">
               Révéler la vérité, défendre les victimes, face aux abus de Lema Dental Clinic en Turquie.
@@ -108,23 +100,24 @@ export const Hero = () => {
         </div>
 
         {/* CTA Buttons */}
-        <div className="flex flex-col lg:flex-row gap-6 justify-center items-center" data-aos="fade-up" data-aos-delay="1000">
-            <PremiumButton
-              href="#mon-histoire"
-              variant="primary"
-              size="lg"
-              icon={<Shield className="h-6 w-6" />}
-            >
-              Découvrir mon histoire
-            </PremiumButton>
-            
-            <PremiumButton
-              variant="secondary"
-              size="lg"
-              icon={<Heart className="h-6 w-6" />}
-            >
-              Soutenir le projet
-            </PremiumButton>
+        <div className="flex flex-col lg:flex-row gap-6 justify-center items-center" {...getAosProps("fade-up", 1000)}>
+          <PremiumButton
+            href="#mon-histoire"
+            variant="primary"
+            size="lg"
+            icon={<Shield className="h-6 w-6" />}
+          >
+            Découvrir mon histoire
+          </PremiumButton>
+
+          <PremiumButton
+            href="#soutenir"
+            variant="secondary"
+            size="lg"
+            icon={<Heart className="h-6 w-6" />}
+          >
+            Soutenir le projet
+          </PremiumButton>
         </div>
 
         {/* Scroll Indicator */}
