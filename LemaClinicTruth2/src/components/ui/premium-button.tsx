@@ -67,8 +67,10 @@ export const PremiumButton = React.forwardRef<HTMLButtonElement & HTMLAnchorElem
       "disabled:pointer-events-none disabled:opacity-50",
       size === "lg" && "px-12 py-6 text-xl min-w-[300px]",
       size === "default" && "px-8 py-4 text-lg min-w-[200px]",
-      variant === "primary" && "bg-primary text-primary-foreground hover:scale-105 hover:shadow-glow",
-      variant === "secondary" && "glass-strong border-2 border-border hover:border-primary/60 text-foreground hover:scale-105",
+      variant === "primary" &&
+        "bg-[hsl(var(--cta-primary))] text-[hsl(var(--cta-primary-foreground))] shadow-[0_28px_70px_-30px_hsl(var(--cta-primary)/0.9)] hover:scale-105 hover:shadow-[0_34px_80px_-28px_hsl(var(--cta-primary)/0.95)]",
+      variant === "secondary" &&
+        "bg-[hsl(var(--cta-secondary))] text-[hsl(var(--cta-secondary-foreground))] shadow-[0_22px_60px_-32px_hsl(var(--cta-secondary)/0.85)] hover:scale-105 hover:shadow-[0_30px_80px_-28px_hsl(var(--cta-secondary)/0.9)]",
       className
     );
 
