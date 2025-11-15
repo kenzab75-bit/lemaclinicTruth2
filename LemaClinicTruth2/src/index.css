@@ -8,50 +8,46 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Dark investigative theme with premium copper & midnight accents */
-    --background: 220 35% 6%;
-    --foreground: 210 30% 96%;
+    --background: 240 7% 5%;
+    --foreground: 0 0% 98%;
 
-    --card: 220 28% 10%;
-    --card-foreground: 210 30% 94%;
+    --card: 240 6% 7%;
+    --card-foreground: 0 0% 94%;
 
-    --popover: 220 28% 8%;
-    --popover-foreground: 210 30% 94%;
+    --popover: 240 6% 6%;
+    --popover-foreground: 0 0% 94%;
 
-    /* Signature crimsons */
-    --primary: 355 86% 54%;
+    --primary: 356 70% 42%;
     --primary-foreground: 0 0% 100%;
 
-    /* Copper champagne secondary */
-    --secondary: 32 58% 62%;
-    --secondary-foreground: 24 32% 16%;
+    --secondary: 355 69% 33%;
+    --secondary-foreground: 0 0% 100%;
 
-    /* Midnight blue tertiary */
-    --tertiary: 215 70% 22%;
-    --tertiary-foreground: 210 40% 92%;
+    --tertiary: 355 69% 28%;
+    --tertiary-foreground: 0 0% 100%;
 
-    --muted: 220 24% 18%;
-    --muted-foreground: 215 14% 72%;
+    --muted: 240 6% 12%;
+    --muted-foreground: 0 0% 70%;
 
-    --accent: 203 79% 48%;
-    --accent-foreground: 200 30% 94%;
+    --accent: 356 70% 42%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 80% 60%;
+    --destructive: 356 70% 42%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 26% 20%;
-    --input: 220 26% 22%;
-    --ring: 355 86% 54%;
+    --border: 240 5% 18%;
+    --input: 240 5% 18%;
+    --ring: 356 70% 42%;
 
-    --cta-primary: 355 86% 54%;
+    --cta-primary: 356 70% 42%;
     --cta-primary-foreground: 0 0% 100%;
-    --cta-secondary: 32 58% 62%;
-    --cta-secondary-foreground: 24 32% 16%;
-    --cta-tertiary: 215 70% 22%;
-    --cta-tertiary-foreground: 210 40% 92%;
+    --cta-secondary: 355 69% 33%;
+    --cta-secondary-foreground: 0 0% 100%;
+    --cta-tertiary: 355 69% 28%;
+    --cta-tertiary-foreground: 0 0% 100%;
 
-    --badge-surface: 220 22% 14%;
-    --badge-border: 210 15% 28%;
+    --badge-surface: 240 6% 8%;
+    --badge-border: 240 5% 18%;
 
     --radius: 0.85rem;
 
@@ -65,7 +61,7 @@ All colors MUST be HSL.
     --font-heading: 'Playfair Display', 'Georgia', serif;
     --font-geo: 'Space Grotesk', 'Inter', sans-serif;
 
-    --grain-opacity: 0.18;
+    --grain-opacity: 0.12;
   }
 }
 
@@ -125,6 +121,28 @@ All colors MUST be HSL.
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
     opacity: var(--grain-opacity);
     mix-blend-mode: screen;
+  }
+
+  .hero-noise::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.3' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)' opacity='0.4'/%3E%3C/svg%3E");
+    opacity: 0.16;
+    mix-blend-mode: soft-light;
+  }
+
+  .hero-vignette::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(circle at center, transparent 40%, rgba(0, 0, 0, 0.65));
+  }
+
+  .hero-halo {
+    animation: hero-halo 8s ease-in-out infinite;
   }
 
   .mesh-panel {
@@ -223,6 +241,21 @@ All colors MUST be HSL.
     100% {
       opacity: 0;
       transform: translate(calc(-50% + var(--particle-x)), calc(-50% + var(--particle-y))) scale(0.5);
+    }
+  }
+
+  @keyframes hero-halo {
+    0% {
+      transform: scale(0.9);
+      opacity: 0.35;
+    }
+    50% {
+      transform: scale(1.05);
+      opacity: 0.6;
+    }
+    100% {
+      transform: scale(0.9);
+      opacity: 0.35;
     }
   }
 
