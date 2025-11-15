@@ -22,11 +22,13 @@ export const Footer = () => {
               <h3 className="text-base font-semibold mb-4 text-foreground">Liens rapides</h3>
               <div className="flex flex-col gap-3">
                 {[
-                  { href: "#accueil", label: "Accueil" },
+                  { href: "#hero", label: "Accueil" },
                   { href: "#mon-histoire", label: "Mon histoire" },
                   { href: "#histoire", label: "S'informer" },
                   { href: "#temoignages", label: "Témoignages" },
+                  { href: "#soutenir", label: "Soutenir" },
                   { href: "#agir", label: "Agir" },
+                  { href: "#confidentialite", label: "Confidentialité" },
                 ].map((link) => (
                   <a
                     key={link.href}
@@ -73,7 +75,9 @@ export const Footer = () => {
               © {new Date().getFullYear()} LemaClinic Truth. Tous droits réservés.
             </p>
             <p className="text-xs text-muted-foreground mt-2">
-              La vérité éclaire toujours
+              <a href="#confidentialite" className="underline underline-offset-2 text-muted-foreground hover:text-primary">
+                Politique de confidentialité et mentions légales
+              </a>
             </p>
           </div>
         </div>

@@ -16,6 +16,8 @@ export default {
       fontFamily: {
         handwriting: ['Shadows Into Light', 'cursive'],
         playfair: ['Playfair Display', 'Georgia', 'serif'],
+        geo: ['"Space Grotesk"', 'Inter', 'sans-serif'],
+        sans: ['Inter', 'system-ui', 'Segoe UI', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -96,10 +98,10 @@ export default {
         },
         "glow": {
           "0%, 100%": {
-            boxShadow: "0 0 20px rgba(220, 38, 38, 0.3)",
+            boxShadow: "0 0 24px hsl(var(--primary) / 0.25)",
           },
           "50%": {
-            boxShadow: "0 0 40px rgba(220, 38, 38, 0.6)",
+            boxShadow: "0 0 48px hsl(var(--primary) / 0.45)",
           },
         },
       },
