@@ -17,6 +17,12 @@ export const Navigation = () => {
   const isScrolled = scrollY > 20;
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const desktopLinks = [
+    { href: "#hero", label: "Accueil" },
+    { href: "#mon-histoire", label: "Mon histoire" },
+    { href: "#soutenir", label: "Soutenir" },
+  ];
+
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
